@@ -11,7 +11,9 @@ class BlogController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    { if(auth()->user()){
+        return view('home.index');
+        }
         return view('home.index1');
     }
 
