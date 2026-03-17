@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\auth\login;
-use App\Http\Controllers\auth\Register;
+use App\Http\Controllers\auth\loginController;
+use App\Http\Controllers\auth\RegisterController;
 
 Route::get('/', [BlogController::class,'index']);
 
@@ -22,10 +22,10 @@ Route::view('/login','auth.login')
 ->middleware('guest')
 ->name('login');
 
-Route::post('/login',login::class)
+Route::post('/login',loginController::class)
 ->middleware('guest');
 
-Route::post('/register', Register::class)
+Route::post('/register', RegisterController::class)
 ->middleware('guest');
 
 Route::post('/logout', function () {
