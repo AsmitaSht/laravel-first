@@ -68,7 +68,8 @@
       integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="{{asset('css/style.css')}}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   </head>
   <!--end::Head-->
   <!--begin::Body-->
@@ -159,7 +160,7 @@
           <a href="./index.html" class="brand-link">
             <!--begin::Brand Image-->
             <img
-              src="./dist/assets/img/AdminLTELogo.png"
+              src="{{ asset('dist/assets/img/AdminLTELogo.png') }}"
               alt="AdminLTE Logo"
               class="brand-image opacity-75 shadow"
             />
@@ -192,7 +193,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./generate/theme.html" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="bi bi-chat"></i>
                   <p>Chats</p>
                 </a>
@@ -203,6 +204,17 @@
                   <p>
                     Friends
                   </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/pst" class="nav-link">
+                  <i class="bi bi-file-earmark-post-fill"></i>
+                  <p>Post</p>
+                </a>
+                <li class="nav-item">
+                <a href="/blogs" class="nav-link">
+                  <i class="bi bi-postcard-fill"></i>
+                  <p>Blog</p>
                 </a>
               </li>
               <li class="nav-item">

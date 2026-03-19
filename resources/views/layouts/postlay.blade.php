@@ -7,7 +7,7 @@
           <div class="create-post-top">
             <!-- Facebook Feed Container -->
             <div class="feed-container">
-                <form method="POST" action="/posts" enctype="multipart/form-data">
+                <form method="POST" action="{{ str_replace('/create', '', url()->current()) }}" enctype="multipart/form-data">
                 @csrf
                 <!-- Create Post Box -->
                 <div class="create-post">

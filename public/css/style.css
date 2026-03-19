@@ -47,10 +47,11 @@
           flex-basis: 90%;
           border: none;
           background: #f0f2f5;
-          padding: 10px 15px;
+          padding: 10px 100px;
           border-radius: 20px;
           outline: none;
           font-size: 16px;
+          text-align: left;
           cursor: pointer;
           transition: 0.2s;
       }
@@ -63,6 +64,9 @@
           display: flex;
           justify-content: space-around;
       }
+      .create-post-bottom a{
+        text-decoration: none;
+      }
 
       .action-btn {
           display: flex;
@@ -74,6 +78,7 @@
           color: #65676b;
           font-weight: 600;
           transition: 0.2s;
+          
       }
 
       .action-btn:hover {
@@ -83,8 +88,8 @@
       .action-btn i {
           margin-right: 8px;
           font-size: 20px;
+          
       }
-
       .video-icon { color: #f02849; }
       .photo-icon { color: #45bd62; }
       .feeling-icon { color: #f7b928; }
@@ -187,9 +192,11 @@
           background-color: #f0f2f5;
       }
 
-      .post-action-btn i {
+      .post-action-btn a {
           margin-right: 8px;
           font-size: 18px;
+          text-decoration: none;
+          color:inherit;
       }
 
       /* --- RIGHT SIDEBAR (Contacts) --- */
@@ -293,12 +300,12 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
-.dropdown-menu a{
+.post-menu a{
     display: block;
     text-decoration: none;
     color: black;
 }
 
-.dropdown-menu a:hover{
+.post-menu a:hover{
     background: #f0f2f5;
 } 

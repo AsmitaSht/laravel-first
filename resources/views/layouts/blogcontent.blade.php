@@ -1,9 +1,6 @@
 @section('main-content')
-
     @php
-     $blog= auth()->user()->blogs()->latest()->first();
-     $posts= auth()->user()->posts()->latest()->first();
-        
+     $post= auth()->user()->blogs()->latest()->first();  
     @endphp
     <div class="feed-container">
         <!-- Facebook Feed Container -->
@@ -13,7 +10,6 @@
                         <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
                         <a href="{{ route('blogs.create') }}">
                         <input type="text" placeholder="What's on your mind, {{ auth()->user()->name }}">
-                        </a>
                     </div>
                     <div class="create-post-bottom">
                         <div class="action-btn">
@@ -26,23 +22,25 @@
                             <i class="fas fa-smile feeling-icon"></i> Feeling/Activity
                         </div>
                     </div>
-            @if($blog)
+                    </a>
+
+            @if($post)
                 <div class="post">
                     <div class="post-header">
                         <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
                             <div class="post-info">
-                                <span><i class="fas fa-globe-americas"></i> {{ $blog->created_at->diffForHumans() }}</span>
+                                <span><i class="fas fa-globe-americas"></i> {{ $post->created_at->diffForHumans() }}</span>
                             </div>
                             </div>
                             <div class="post-content" >
-                                    {{ $blog->content }}
+                                    {{ $post->content }}
                             </div>
-                            @if($blog->image)
-                                <img src="{{ asset('storage/'.$blog->image) }}" alt="Post Image" class="post-image">
+                            @if($post->image)
+                                <img src="{{ asset('storage/'.$post->image) }}" alt="Post Image" class="post-image">
                             @endif
-                            @if($blog->video)
+                            @if($post->video)
                                 <video width="300" controls>
-                                <source src="{{ asset('storage/'.$blog->video) }}" alt="Post Image" class="post-image">
+                                <source src="{{ asset('storage/'.$post->video) }}" alt="Post Image" class="post-image">
                                 </video>
                             @endif
                             </div>
@@ -59,7 +57,7 @@
                                   <i class="far fa-thumbs-up"></i><a href=""> Like </a> 
                                 </div>
                                 <div class="post-action-btn">
-                                 <i class="far fa-comment-alt"></i><a href="{{route('cmt.create',$blog->id)}}">
+                                 <i class="far fa-comment-alt"></i><a href="{{route('cmt.create')}}">
                                     Comment
                                     </a>
                                 </div>
@@ -67,28 +65,14 @@
                                    <i class="fas fa-share"></i> <a href="#">Share </a>
                                 </div>
                             </div>
-                            @foreach($blog->comments as $comm)
+                            @foreach($post->comments as $comm)
                                 <div class="create-post-top">
                                 <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
                                 <div class="post-content" style="text-align: left">
                                     {{ $comm->content }}<br>
-                                    @foreach ($comments as $comment)
-                                    <div style="margin-left: {{ $level }}px;">
-                                        <p>{{ $comment->message }}</p>
-
-                                        <button>Reply</button>
-
-                                        @if ($comment->replies->count())
-                                            @include('comment-replies', [
-                                                'comments' => $comment->replies,
-                                                'level' => $level + 20
-                                            ])
-                                        @endif
-                                    </div>
-                                @endforeach
                                     <form method="POST" action="/cmt" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" value="{{ $comm->id }}" name="blog_id">
+                                        <inout type="hidden" value="{{ $comm->id }}" name="blog_id">
                                         <button type="submit">Reply</button>
                                     </form>
                                 </div>
@@ -96,63 +80,7 @@
                             @endforeach
                         </div>
                 @endif
-        {{-- <1st post> --}}
-            
-                <div class="post">
-                    @if($posts)
-                    <div class="post-header">
-                        <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
-                            <div class="post-info">
-                                <span><i class="fas fa-globe-americas"></i> {{ $posts->created_at->diffForHumans() }}</span>
-                            </div>
-                    </div>
-                            <div class="post-content" >
-                                    {{ $posts->content }}
-                            </div>
-                            @if($posts->image)
-                                <img src="{{ asset('storage/'.$posts->image) }}" alt="Post Image" class="post-image">
-                            @endif
-                            @if($posts->video)
-                                <video width="300" controls>
-                                <source src="{{ asset('storage/'.$posts->video) }}" alt="Post Image" class="post-image">
-                                </video>
-                            @endif
-                            <div class="post-stats">
-                                <div class="post-stats-left">
-                                        <span></span>
-                                </div>
-                                <div class="post-stats-right">
-                                        <span></span>
-                                </div>
-                            </div>
-                            <div class="post-actions">
-                                <div class="post-action-btn">
-                                  <i class="far fa-thumbs-up"></i><a href=""> Like </a> 
-                                </div>
-                                <div class="post-action-btn">
-                                 <i class="far fa-comment-alt"></i><a href="{{route('cmt.create',$posts->id)}}">
-                                    Comment
-                                    </a>
-                                </div>
-                                <div class="post-action-btn">
-                                   <i class="fas fa-share"></i> <a href="#">Share </a>
-                                </div>
-                            </div>
-                            @foreach($posts->comments as $comm)
-                                <div class="create-post-top">
-                                <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
-                                <div class="post-content" style="text-align: left">
-                                    {{ $comm->content }}<br>
-                                    <form method="POST" action="/cmt" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" value="{{ $comm->id }}" name="post_id">
-                                        <button type="submit">Reply</button>
-                                    </form>
-                                </div>
-                                </div>
-                            @endforeach
-                        </div>
-                @endif
+
     <!-- Facebook Feed Container -->
     
                 <!-- Post 1 -->

@@ -1,18 +1,18 @@
 <?php
-use App\Models\Blog;
+use App\Models;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\auth\loginController;
 use App\Http\Controllers\auth\RegisterController;
+use App\Http\Controllers\CommentController;
 
-Route::get('/', [BlogController::class,'index']);
+Route::get('/', [HomeController::class,'index']);
 
-Route::get('/home',function()
-{
-    return view('home.index');
-});
+Route::get('/home',[HomeController::class,'index']);
 
 Route::view('/register','auth.register')
 ->middleware('guest')
@@ -35,6 +35,10 @@ Route::post('/logout', function () {
 
 Route::get('/profile',[profileController::class,'index']);
 
-Route::resource('posts',BlogController::class);
+Route::resource('blogs',BlogController::class);
+
+Route::resource('pst',PostController::class);
 
 Route::resource('users',UserController::class);
+
+Route::resource('cmt',CommentController::class);

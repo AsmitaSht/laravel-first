@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Blog;
+use App\Models\Post;
 
 use Illuminate\Http\Request;
 
-class BlogController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     { if(auth()->user()){
-        return view('home.index4');
+        return view('home.index3');
         }
         return view('home.index1');
     }
@@ -46,7 +46,7 @@ class BlogController extends Controller
         $videoPath = $request->file('video')->store('posts', 'public');
     }
 
-    Blog::create([
+    Post::create([
         'user_id' => auth()->id(),
         'content' => $request->content,
         'image' => $imagePath,
@@ -68,7 +68,7 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Blog $post)
+    public function edit(Post $post)
     {
         return view('layouts.edit',compact('post'));
     }
@@ -76,7 +76,7 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Blog $post)
+    public function update(Request $request, Post $post)
     {  
          $imagePath = $post->image;
         $videoPath = null; 
@@ -92,13 +92,13 @@ class BlogController extends Controller
         'image'=>$imagePath
         ]);
 
-        return redirect('/profile')->with('success','Blog Updated');
+        return redirect('/profile')->with('success','Post Updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $post)
+    public function destroy(Post $post)
     {
      $post->delete();
      return redirect('/profile')->with('success', 'Post deleted!');   

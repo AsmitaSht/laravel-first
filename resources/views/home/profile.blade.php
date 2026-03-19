@@ -13,7 +13,7 @@
                 <div class="create-post">
                     <div class="create-post-top">
                         <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
-                        <a href="{{ route('posts.create') }}">
+                        <a href="{{ route('blogs.create') }}">
                         <input type="text" placeholder="What's on your mind, {{ auth()->user()->name }}">
                         </a>
                     </div>
@@ -31,7 +31,7 @@
 
                 <div class="profile-posts">
                     <h3>Your Posts</h3>
-                    @foreach (auth()->user()->posts as $post)
+                    @foreach (auth()->user()->blogs as $post)
                         <div class="post">
                             <div class="post-header">
                                 <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
@@ -41,15 +41,14 @@
                                 <div class="post-menu">
                                     <span><i class="bi bi-three-dots menu-icon"></i></span>
                                     <div class="dropdown-menu">
-                                       <a class="dropdown-item" href="{{ route('posts.edit',$post->id) }}">Edit</a>
-                                       <form action="{{ route('posts.destroy',$post->id) }}" method="POST" style="display: inline;">
+                                       <a class="dropdown-item" href="{{ route('blogs.edit',$post->id) }}">Edit</a>
+                                       <form action="{{ route('blogs.destroy',$post->id) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="dropdown-item">Delete</button>
                                        </form>
                                     </div> 
                                 </div>
-                                <i class="fas fa-ellipsis-h" style="color: #65676b; cursor: pointer;"></i>
                             </div>
                             <div class="post-content" style="text-align: left">
                                 {{ $post->content }}
@@ -67,13 +66,33 @@
                             <div class="post-action-btn">
                                 <i class="far fa-thumbs-up"></i> Like
                             </div>
-                            <div class="post-action-btn">
-                                <i class="far fa-comment-alt"></i> Comment
+                            <div class="post-action-btn"><a href="{{ route('cmt.create',$post->id) }}">
+                                <i class="far fa-comment-alt"></i> Comment</a>
                             </div>
                             <div class="post-action-btn">
                                 <i class="fas fa-share"></i> Share
                             </div>
                         </div>
+                        @foreach($post->comments as $comm)
+                                <div class="create-post-top">
+                                <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
+                                <div class="post-content" style="text-align: left">
+                                    {{ $comm->content }}
+                                </div>
+                                </div>
+                            @endforeach
+                            <div class="create-post-top">
+                            <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
+                            <form method="POST" action="/cmt" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" value="{{ $post->id }}" name="commentable_id">
+                                <input type="hidden" value="{{ get_class($post) }}" name="commentable_type">
+                                <input type="text" placeholder="What's on your mind, {{ auth()->user()->name }}" name="content">
+                                <button type="submit">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </form> 
+                </div>                
                     @endforeach
                     <script>
                         document.querySelectorAll('.menu-icon').forEach(icon => {
