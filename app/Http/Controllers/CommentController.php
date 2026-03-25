@@ -19,10 +19,12 @@ class CommentController extends Controller
             $model->comments()->create([
                 'content' => $request->content,
                 'user_id' => auth()->id(),
+                'parent_id'=>$request->parent_id,
             ]);
         return back();
 
     }
 
+   
     
 }

@@ -67,33 +67,12 @@
                                    <i class="fas fa-share"></i> <a href="#">Share </a>
                                 </div>
                             </div>
-                            @foreach($blog->comments as $comm)
-                                <div class="create-post-top">
-                                <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
-                                <div class="post-content" style="text-align: left">
-                                    {{ $comm->content }}<br>
-                                    @foreach ($comments as $comment)
-                                    <div style="margin-left: {{ $level }}px;">
-                                        <p>{{ $comment->message }}</p>
-
-                                        <button>Reply</button>
-
-                                        @if ($comment->replies->count())
-                                            @include('comment-replies', [
-                                                'comments' => $comment->replies,
-                                                'level' => $level + 20
-                                            ])
-                                        @endif
-                                    </div>
-                                @endforeach
-                                    <form method="POST" action="/cmt" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" value="{{ $comm->id }}" name="blog_id">
-                                        <button type="submit">Reply</button>
-                                    </form>
-                                </div>
-                                </div>
-                            @endforeach
+                            @if($blog->comments)
+                                @include('comment.comment', [
+                                    'comments' => $blog->comments->where('parent_id', null),
+                                    'level' => 0
+                                ])
+                            @endif
                         </div>
                 @endif
         {{-- <1st post> --}}
@@ -138,19 +117,15 @@
                                    <i class="fas fa-share"></i> <a href="#">Share </a>
                                 </div>
                             </div>
-                            @foreach($posts->comments as $comm)
-                                <div class="create-post-top">
-                                <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
-                                <div class="post-content" style="text-align: left">
-                                    {{ $comm->content }}<br>
-                                    <form method="POST" action="/cmt" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" value="{{ $comm->id }}" name="post_id">
-                                        <button type="submit">Reply</button>
-                                    </form>
+                            @if($posts->comments)
+                                @include('comment.comment', [
+                                    'comments' => $posts->comments->where('parent_id', null),
+                                    'level' => 0
+                                ])
+                            @endif
                                 </div>
                                 </div>
-                            @endforeach
+                        
                         </div>
                 @endif
     <!-- Facebook Feed Container -->

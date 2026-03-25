@@ -1,6 +1,6 @@
 @section('main-content')
     @php
-     $post= auth()->user()->blogs()->latest()->first();  
+     $blog= auth()->user()->blogs()->latest()->first();  
     @endphp
     <div class="feed-container">
         <!-- Facebook Feed Container -->
@@ -24,23 +24,23 @@
                     </div>
                     </a>
 
-            @if($post)
+            @if($blog)
                 <div class="post">
                     <div class="post-header">
                         <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
                             <div class="post-info">
-                                <span><i class="fas fa-globe-americas"></i> {{ $post->created_at->diffForHumans() }}</span>
+                                <span><i class="fas fa-globe-americas"></i> {{ $blog->created_at->diffForHumans() }}</span>
                             </div>
                             </div>
                             <div class="post-content" >
-                                    {{ $post->content }}
+                                    {{ $blog->content }}
                             </div>
-                            @if($post->image)
-                                <img src="{{ asset('storage/'.$post->image) }}" alt="Post Image" class="post-image">
+                            @if($blog->image)
+                                <img src="{{ asset('storage/'.$blog->image) }}" alt="Post Image" class="post-image">
                             @endif
-                            @if($post->video)
+                            @if($blog->video)
                                 <video width="300" controls>
-                                <source src="{{ asset('storage/'.$post->video) }}" alt="Post Image" class="post-image">
+                                <source src="{{ asset('storage/'.$blog->video) }}" alt="Post Image" class="post-image">
                                 </video>
                             @endif
                             </div>
@@ -57,7 +57,7 @@
                                   <i class="far fa-thumbs-up"></i><a href=""> Like </a> 
                                 </div>
                                 <div class="post-action-btn">
-                                 <i class="far fa-comment-alt"></i><a href="{{route('cmt.create')}}">
+                                 <i class="far fa-comment-alt"></i><a href="{{route('cmt.create',$blog->id)}}">
                                     Comment
                                     </a>
                                 </div>
@@ -65,19 +65,12 @@
                                    <i class="fas fa-share"></i> <a href="#">Share </a>
                                 </div>
                             </div>
-                            @foreach($post->comments as $comm)
-                                <div class="create-post-top">
-                                <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
-                                <div class="post-content" style="text-align: left">
-                                    {{ $comm->content }}<br>
-                                    <form method="POST" action="/cmt" enctype="multipart/form-data">
-                                        @csrf
-                                        <inout type="hidden" value="{{ $comm->id }}" name="blog_id">
-                                        <button type="submit">Reply</button>
-                                    </form>
-                                </div>
-                                </div>
-                            @endforeach
+                            @if($blog->comments)
+                                @include('comment.comment', [
+                                    'comments' => $blog->comments->where('parent_id', null),
+                                    'level' => 0
+                                ])
+                            @endif
                         </div>
                 @endif
 

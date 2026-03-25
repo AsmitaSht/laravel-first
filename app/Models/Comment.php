@@ -13,6 +13,7 @@ class Comment extends Model
         'commentable_type',
         'user_id',
         'content',
+        'parent_id',
 
     ];
 
@@ -22,5 +23,14 @@ class Comment extends Model
     public function commentable():MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function replies()
+    {return $this->hasMany(Comment::class,'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class,'parent_id');
     }
 }

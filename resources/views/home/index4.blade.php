@@ -1,2 +1,2 @@
 @extends('layouts.master')
-@include('layouts.blogcontent')
+@include('layouts.blogcontent') 
