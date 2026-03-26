@@ -17,13 +17,13 @@
                     </div>
                         <div class="create-post-bottom">
                             <label for="photo-video-input" class="action-btn">
-                                <i class="fas fa-video photo-icon"></i> Photo
+                                 <i class="fas fa-images video-icon"></i>Photo
                             </label>
                             <input type="file" id="photo-video-input" style="display: none;" name="image">
                         </div>
                         <div class="action-btn">
                             <label for="live-video-input" class="action-btn">
-                                <i class="fas fa-images video-icon"></i> Video
+                                <i class="fas fa-video photo-icon"></i> Video
                             </label>
                             <input type="file" id="live-video-input" style="display: none;" name="video">
                         </div>

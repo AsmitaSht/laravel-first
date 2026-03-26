@@ -47,13 +47,13 @@
           flex-basis: 90%;
           border: none;
           background: #f0f2f5;
-          padding: 10px 100px;
+          padding: 10px 160px;
           border-radius: 20px;
           outline: none;
           font-size: 16px;
           text-align: left;
           cursor: pointer;
-          transition: 0.2s;
+          /* transition: 0.2s; */
       }
 
       .create-post-top input:hover {
@@ -64,10 +64,11 @@
           display: flex;
           justify-content: space-around;
       }
-      .create-post-bottom a{
+      .create-post a{
         text-decoration: none;
+        text-decoration-line: none;
       }
-
+      
       .action-btn {
           display: flex;
           align-items: center;

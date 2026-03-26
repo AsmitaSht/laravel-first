@@ -1,14 +1,14 @@
 @php
     $post=auth()->user()->posts()->latest()->first();
 @endphp
- @if($post)
-                <div class="post">
-                    <div class="post-header">
-                        <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
-                            <div class="post-info">
-                                <span><i class="fas fa-globe-americas"></i> {{ $post->created_at->diffForHumans() }}</span>
-                            </div>
-                            </div>
+@if($post)
+<div class="post">
+    <div class="post-header">
+        <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
+        <div class="post-info">
+            <span><i class="fas fa-globe-americas"></i> {{ $post->created_at->diffForHumans() }}</span>
+        </div>
+    </div>
                             <div class="post-content" >
                                     {{ $post->content }}
                             </div>
