@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
+
 class HomeController extends Controller
 {
     /**
@@ -14,7 +16,7 @@ class HomeController extends Controller
         if(auth()->id()){
             return view('home.index');
         }
-        return view('home.index1');
+        return view('auth.register');
     }
 
     /**

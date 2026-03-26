@@ -1,3 +1,4 @@
+@extends('layouts.loglay')
 @section('reg')
     @section('title')
     Register
