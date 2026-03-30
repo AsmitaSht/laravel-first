@@ -2,8 +2,8 @@
 window.commentConfig = {
     csrf: "{{ csrf_token() }}",
     username: "{{ auth()->user()->name }}",
-    blogId: "{{ $blog->id }}",
-    blogType: "{{ addslashes(get_class($blog)) }}",
+    blogId: "{{ $blog->id ??$post->id }}",
+    blogType: "{{ addslashes(get_class($blog ?? $post)) }}",
     route: "{{ route('cmt.store') }}"
 };
 </script>

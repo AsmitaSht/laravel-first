@@ -12,7 +12,7 @@ use App\Http\Controllers\auth\logoutController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\mail\EmailController;
-use App\Http\Middleware\ValidUser;
+use App\Http\Middleware\ValidUser;  
 use App\Http\Middleware\Guest;
 
 Route::get('/', [HomeController::class,'index']);
@@ -26,7 +26,7 @@ Route::middleware([Guest::class])->group(function(){
 });
 
 
-Route::middleware([ValidUser::class])->group((function(){
+Route::middleware(['IsUserValid'])->group((function(){
     Route::get('sendemail',[EmailController::class,'sendEmail']);
     Route::get('/home',[HomeController::class,'index']);
     Route::get('/profile',[profileController::class,'index']);

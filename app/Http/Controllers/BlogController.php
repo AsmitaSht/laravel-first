@@ -67,18 +67,18 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Blog $post)
+    public function edit(Blog $blog)
     {
-        return view('layouts.edit',compact('post'));
+        return view('layouts.edit',compact('blog'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Blog $post)
+    public function update(Request $request, Blog $blog)
     {  
-         $imagePath = $post->image;
-        $videoPath = null; 
+         $imagePath = $blog->image;
+        $videoPath  = $blog->video; 
         if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('posts', 'public');
             }
@@ -86,20 +86,23 @@ class BlogController extends Controller
             if ($request->hasFile('video')) {
                 $videoPath = $request->file('video')->store('posts', 'public');
             }
-        $post-> update([
+        $blog-> update([
         'content'=>$request->content,
-        'image'=>$imagePath
+        'image'=>$imagePath,
+        'video'=>$videoPath
         ]);
 
         return redirect('/profile')->with('success','Blog Updated');
+
+        //$blog->save();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $post)
+    public function destroy(Blog $blog)
     {
-     $post->delete();
+     $blog->delete();
      return redirect('/profile')->with('success', 'Post deleted!');   
     }
 }

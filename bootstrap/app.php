@@ -13,9 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->appendToGroup('ok-user',[
-            ValidUser::class
-        ]);
+        $middleware->alias(['IsUserValid'=>ValidUser::class]);
+        // $middleware->appendToGroup('ok-user',[
+        //     ValidUser::class
+        // ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

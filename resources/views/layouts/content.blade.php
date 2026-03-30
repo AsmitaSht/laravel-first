@@ -1,8 +1,8 @@
 @section('main-content')
 
     @php
-     $blog= auth()->user()->blogs()->latest()->first();
-     $posts= auth()->user()->posts()->latest()->first();
+     $blog= Auth::user()->blogs()->latest()->first();
+     $posts= Auth::user()->posts()->latest()->first();
         
     @endphp
 <div class="feed-container">
