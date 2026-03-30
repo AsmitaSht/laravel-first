@@ -21,7 +21,7 @@ class LoginController extends Controller
 
         // Attempt to log in
         if (Auth::attempt($validated)) {
-            $request->session()->regenerate();
+            // $request->session()->regenerate();
             return redirect('/home')->with('success', 'Logged in successfully!');
         }
 

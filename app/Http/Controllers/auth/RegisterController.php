@@ -23,22 +23,26 @@ class RegisterController extends Controller
         ]);
 
         // Create the user
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
+        // $user = User::create([
+        //     'name' => $validated['name'],
+        //     'email' => $validated['email'],
+        //     'password' => Hash::make($validated['password']),
+        // ]);
+
+        $user=User::create($validated);
         //mail sending
         $subject="Welcome";
         $message=$validated['name'];
-        $req=Mail::to($validated['email'])->send(new welcomemail($message,$subject));   
+        $req=Mail::to($validated['email'])->send(new welcomemail($message,$subject));  
         // Log them in
-        Auth::login($user);
+        Auth::login($user); /*if not used this then*/
 
-
-
-        // Redirect to home
-        return redirect('/home')->with('success', 'Welcome to B-Blog!');
+        // if($user){
+        // return redirect('/home')->with('success', 'Welcome to B-Blog!');
+        // }  (sent to login)
+        //redirect to home
+         return redirect('/home')->with('success', 'Welcome to B-Blog!');
+       
     }
 
 }

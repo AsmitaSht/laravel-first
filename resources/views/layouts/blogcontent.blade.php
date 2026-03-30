@@ -6,7 +6,7 @@
 <div class="feed-container">
     <div class="create-post">
         <div class="create-post-top">
-            <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
+            <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar" style="">
             <a href="{{ route('blogs.create') }}">
             <input type="text" placeholder="What's on your mind, {{ auth()->user()->name }}">
         </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\auth\loginController;
+use App\Http\Controllers\auth\logoutController;
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\mail\EmailController;
@@ -19,7 +20,9 @@ Route::view('/register','auth.register')
 ->middleware('guest');
 
 Route::post('/register', RegisterController::class)
-->middleware('guest')->name('register');
+->name('register');
+
+
 Route::get('sendemail',[EmailController::class,'sendEmail']);
 
 Route::view('/login','auth.login')
@@ -27,15 +30,17 @@ Route::view('/login','auth.login')
 ->name('login');
 
 Route::post('/login',loginController::class)
-->middleware('guest');
+->name('login');
 
 Route::get('/home',[HomeController::class,'index'])->middleware('auth')->name('/home');
 
+Route::post('/logout',logoutController::class);
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/')->with('success', 'Logged out successfully!');
-})->middleware('auth')->name('logout');
+
+// Route::post('/logout', function () {
+//     Auth::logout();
+//     return redirect('/')->with('success', 'Logged out successfully!');
+// })->middleware('auth')->name('logout');
 
 Route::get('/profile',[profileController::class,'index']);
 
