@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Blog;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BlogController extends Controller
 {
@@ -59,9 +59,10 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Blog $blog)
     {
-        //
+        Gate::authorize('view', $blog);
+        return view('home.index4',compact('blog'));
     }
 
     /**
@@ -76,7 +77,7 @@ class BlogController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Blog $blog)
-    {  
+    {   Gate::authorize('update',$blog);
          $imagePath = $blog->image;
         $videoPath  = $blog->video; 
         if ($request->hasFile('image')) {
@@ -102,7 +103,8 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-     $blog->delete();
-     return redirect('/profile')->with('success', 'Post deleted!');   
+        Gate::authorize('delete',$blog);
+        $blog->delete();
+        return redirect('/profile')->with('success', 'Post deleted!');   
     }
 }

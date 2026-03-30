@@ -10,7 +10,7 @@ window.commentConfig = {
 <script src="{{ asset('js/comment.js') }}"></script>
 @foreach ($comments as $comm)
  <div class="create-post-top">
-    <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
+    <img src={{ asset('storage/'.$comm->user->image) }} alt="User" class="user-avatar">
     <div class="post-content" style="text-align: left">
     <div style="margin-left: {{ $level }}px;">
         <p>{{ $comm->content }}</p>

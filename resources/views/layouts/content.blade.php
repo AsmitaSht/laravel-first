@@ -1,8 +1,11 @@
 @section('main-content')
 
     @php
-     $blog= Auth::user()->blogs()->latest()->first();
-     $posts= Auth::user()->posts()->latest()->first();
+    use App\Models\Blog;
+    use App\Models\Post;
+
+     $blog= Blog:: with('user')->latest()->first();
+     $posts= Post::with('user')->latest()->first();
         
     @endphp
 <div class="feed-container">
@@ -29,7 +32,7 @@
  @if($blog)
     <div class="post">
         <div class="post-header">
-            <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
+            <img src="{{ asset('storage/'.$blog->user->image) }}" alt="User" class="user-avatar">
             <div class="post-info">
                 <span><i class="fas fa-globe-americas"></i> {{ $blog->created_at->diffForHumans() }}</span>
             </div>
@@ -79,7 +82,7 @@
 @if($posts)
     <div class="post">
         <div class="post-header">
-            <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
+            <img src="{{ asset('storage/'.$posts->user->image) }}" alt="User" class="user-avatar">
             <div class="post-info">
                 <span><i class="fas fa-globe-americas"></i> {{ $posts->created_at->diffForHumans() }}</span>
             </div>
