@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -11,10 +12,8 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    { if(auth()->user()){
+    { 
         return view('home.index3');
-        }
-        return view('home.index1');
     }
 
     /**
@@ -47,7 +46,7 @@ class PostController extends Controller
     }
 
     Post::create([
-        'user_id' => auth()->id(),
+        'user_id' => Auth::id(),
         'content' => $request->content,
         'image' => $imagePath,
         'video' => $videoPath

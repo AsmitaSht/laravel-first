@@ -13,10 +13,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(auth()->id()){
             return view('home.index');
-        }
-        return view('auth.register');
+    
     }
 
     /**
