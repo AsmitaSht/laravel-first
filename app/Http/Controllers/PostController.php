@@ -99,7 +99,14 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-     $post->delete();
-     return redirect('/profile')->with('success', 'Post deleted!');   
+        $imagePath=Post::select('image')->where('id',$post->id);
+        $videoPath=Post::select('video')->where('id',$post->id);
+        $filePath=public_path('storage/'.$imagePath[0]->image);
+        unlink($filePath);
+        $videoFilePath=public_path('storage/'.$videoPath[0]->video);
+        unlink($videoFilePath);
+        $post=Post::where('id',$post->id)->delete();
+        $post->delete();
+        return redirect('/profile')->with('success', 'Post deleted!');   
     }
 }

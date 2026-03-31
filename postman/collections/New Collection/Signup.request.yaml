@@ -1,0 +1,16 @@
+$kind: http-request
+name: Signup
+url: http://127.0.0.1:8000/api/signup
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\":\"Prashant\",\r
+
+    \    \"email\":\"p@gmail.com\",\r
+
+    \    \"password\":\"12345\"\r
+
+    }"
+order: 1774862051752

@@ -104,6 +104,16 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         Gate::authorize('delete',$blog);
+        $post=Blog::where('id',$blog->id)->firstOrFail();
+
+        if($post->user_id !== Auth::id()){
+            abort(403);
+        }
+
+        $imagePath=$post->image;
+        $videoPath=$post->video;
+        $filePath=public_path('storage/'.$imagePath);
+        unlink($filePath);
         $blog->delete();
         return redirect('/profile')->with('success', 'Post deleted!');   
     }
