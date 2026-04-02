@@ -13,7 +13,7 @@
                 <!-- Create Post Box -->
                     Name:
                         <div class="post-content" >
-                              <input type="text" value="{{ auth()->user()->name }}" name="content">
+                              <input type="text" value="{{ auth()->user()->name }}" name="name">
                         </div>
                         @if(auth()->user()->image)
                             <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="Post Image" class="post-image">

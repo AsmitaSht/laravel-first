@@ -5,12 +5,16 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Repositories\Interface\BlogRepositoryInterface;
 
 class BlogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public $blogRepository;
+    public function __construct(BlogRepositoryInterface $blogRepository)
+    {
+        $this->blogRepository = $blogRepository;
+    }
+    
     public function index()
     {
         return view('home.index4');
@@ -28,7 +32,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-    $request->validate([
+    $data=$request->validate([
         'content' => 'required',
         'image' => 'nullable|image',
         'video' => 'nullable|mimes:mp4,mov,avi|max:20000'
@@ -39,18 +43,15 @@ class BlogController extends Controller
 
     if ($request->hasFile('image')) {
         $imagePath = $request->file('image')->store('posts', 'public');
+        $data['image']=$imagePath;
     }
 
     if ($request->hasFile('video')) {
         $videoPath = $request->file('video')->store('posts', 'public');
+        $data['video']=$videoPath;
     }
-
-    Blog::create([
-        'user_id' => Auth::id(),
-        'content' => $request->content,
-        'image' => $imagePath,
-        'video' => $videoPath
-    ]);
+    $data['user_id']=Auth::id();
+    $this->blogRepository->store($data);
 
     return redirect('/home');
     }
@@ -82,16 +83,14 @@ class BlogController extends Controller
         $videoPath  = $blog->video; 
         if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('posts', 'public');
+                $data['image']=$imagePath;
             }
 
             if ($request->hasFile('video')) {
                 $videoPath = $request->file('video')->store('posts', 'public');
+                $data['video']=$videoPath;
             }
-        $blog-> update([
-        'content'=>$request->content,
-        'image'=>$imagePath,
-        'video'=>$videoPath
-        ]);
+            $this->blogRepository->update($blog,$data);
 
         return redirect('/profile')->with('success','Blog Updated');
 
@@ -104,17 +103,17 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         Gate::authorize('delete',$blog);
-        $post=Blog::where('id',$blog->id)->firstOrFail();
+        // $post=Blog::where('id',$blog->id)->firstOrFail();
 
         // if($post->user_id !== Auth::id()){
         //     abort(403);
         // }
 
-        $imagePath=$post->image;
-        $videoPath=$post->video;
+        $imagePath=$blog->image;
+        $videoPath=$blog->video;
         $filePath=public_path('storage/'.$imagePath);
         unlink($filePath);
-        $blog->delete();
+        $this->blogRepository->delete($blog);
         return redirect('/profile')->with('success', 'Post deleted!');   
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-
+use App\Repositories\Interface\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -10,6 +10,10 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private $userRepository;
+    public function __construct(UserRepositoryInterface $userRepository){
+        $this->userRepository=$userRepository;
+    }
     public function index()
     {
         //
@@ -28,19 +32,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data=$request->validate([
             'name'=>'required',
             'image'=>'nullable|image'
         ]);
         $imagePath=null;
         if($request->hasFile('image')){
         $imagePath=$request->file('image')->store('users','public');
+        $data['image']=$imagePath;
         }
 
-        User::create([
-            'name'=>$request->name,
-            'image'=>$imagePath
-        ]);
+        $this->userRepository->store($data);
         return redirect('/profile');
     }
 
@@ -65,18 +67,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-     $imagePath = $user->image;
-     $n=$user->name;
+        $imagePath = $user->image;
+        $data=$request->all();
         if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('users', 'public');
-            }
-        if($request->name){
-            $n=$request->name;
-        }
-        $user-> update([
-        'name'=>$n,
-        'image'=>$imagePath
-        ]);
+              $imagePath = $request->file('image')->store('users', 'public');
+           $data['image']=$imagePath;}
+
+        $this->userRepository->update($user,$data);
 
         return redirect('/profile')->with('success','User Updated');
 
