@@ -5,6 +5,7 @@ use App\Models\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -67,17 +68,17 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Post $pst)
     {
-        return view('layouts.edit',compact('post'));
+        return view('layouts.edit',['item'=>$pst]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $pst)
     {  
-         $imagePath = $post->image;
+         $imagePath = $pst->image;
         $videoPath = null; 
         if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('posts', 'public');
@@ -86,7 +87,7 @@ class PostController extends Controller
             if ($request->hasFile('video')) {
                 $videoPath = $request->file('video')->store('posts', 'public');
             }
-        $post-> update([
+        $pst-> update([
         'content'=>$request->content,
         'image'=>$imagePath
         ]);
@@ -97,16 +98,17 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
-    {
-        $imagePath=Post::select('image')->where('id',$post->id);
-        $videoPath=Post::select('video')->where('id',$post->id);
-        $filePath=public_path('storage/'.$imagePath[0]->image);
+    public function destroy(Post $pst)
+    {   
+        Gate::authorize('delete',$pst);
+        $post =Post::where('id',$pst->id)->firstOrFail();
+        $imagePath=$post->image;
+        $videoPath=$post->video;
+        $filePath=public_path('storage/'.$imagePath);
         unlink($filePath);
-        $videoFilePath=public_path('storage/'.$videoPath[0]->video);
+        $videoFilePath=public_path('storage/'.$videoPath);
         unlink($videoFilePath);
-        $post=Post::where('id',$post->id)->delete();
-        $post->delete();
+        $pst->delete();
         return redirect('/profile')->with('success', 'Post deleted!');   
     }
 }

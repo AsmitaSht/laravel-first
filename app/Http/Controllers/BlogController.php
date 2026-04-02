@@ -70,7 +70,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        return view('layouts.edit',compact('blog'));
+        return view('layouts.edit',['item'=>$blog]);
     }
 
     /**
@@ -106,9 +106,9 @@ class BlogController extends Controller
         Gate::authorize('delete',$blog);
         $post=Blog::where('id',$blog->id)->firstOrFail();
 
-        if($post->user_id !== Auth::id()){
-            abort(403);
-        }
+        // if($post->user_id !== Auth::id()){
+        //     abort(403);
+        // }
 
         $imagePath=$post->image;
         $videoPath=$post->video;

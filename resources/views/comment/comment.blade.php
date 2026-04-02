@@ -1,9 +1,7 @@
 <script>
 window.commentConfig = {
     csrf: "{{ csrf_token() }}",
-    username: "{{ auth()->user()->name }}",
-    blogId: "{{ $blog->id ??$post->id }}",
-    blogType: "{{ addslashes(get_class($blog ?? $post)) }}",
+    username: "{{ Auth::user()->name }}",
     route: "{{ route('cmt.store') }}"
 };
 </script>
@@ -13,8 +11,8 @@ window.commentConfig = {
     <img src={{ asset('storage/'.$comm->user->image) }} alt="User" class="user-avatar">
     <div class="post-content" style="text-align: left">
     <div style="margin-left: {{ $level }}px;">
-        <p>{{ $comm->content }}</p>
-        <button type="button" onclick="cmtreply({{$comm->id}})">Reply</button>
+          <p>{{ $comm->content }}</p>
+        <button type="button" onclick="cmtreply({{$comm->id}},'{{ $model->id }}', '{{ addslashes(get_class($model)) }}')">Reply</button>
         <p id="reply-{{ $comm->id }}">
         @if($comm->replies->count())
         <a href="#" onclick="reply()">View {{$comm->replies->count()}} replies</a></p>

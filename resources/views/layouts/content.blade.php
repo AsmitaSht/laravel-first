@@ -30,103 +30,11 @@
     </div>
 {{-- < class="create-post"> --}}
  @if($blog)
-    <div class="post">
-        <div class="post-header">
-            <img src="{{ asset('storage/'.$blog->user->image) }}" alt="User" class="user-avatar">
-            <div class="post-info">
-                <span><i class="fas fa-globe-americas"></i> {{ $blog->created_at->diffForHumans() }}</span>
-            </div>
-        </div>
-        <div class="post-content" >
-            {{ $blog->content }}
-        </div>
-        @if($blog->image)
-            <img src="{{ asset('storage/'.$blog->image) }}" alt="Post Image" class="post-image">
-        @endif
-        @if($blog->video)
-            <video width="300" controls>
-            <source src="{{ asset('storage/'.$blog->video) }}" alt="Post Image" class="post-image">
-            </video>
-        @endif
-
-        <div class="post-stats">
-            <div class="post-stats-left">
-                <span>li</span>
-            </div>
-            <div class="post-stats-right">
-                <span>1 Comments</span>
-            </div>
-        </div>
-        <div class="post-actions">
-            <div class="post-action-btn">
-                <i class="far fa-thumbs-up"></i><a href=""> Like </a> 
-            </div>
-            <div class="post-action-btn">
-                <i class="far fa-comment-alt"></i><a href="{{route('cmt.create',$blog->id)}}">
-                    Comment
-                </a>
-            </div>
-            <div class="post-action-btn">
-                <i class="fas fa-share"></i> <a href="#">Share </a>
-            </div>
-        </div>
-        @if($blog->comments)
-            @include('comment.comment', [
-                'comments' => $blog->comments->where('parent_id', null),
-                'level' => 0
-                ])
-        @endif
-    </div>
+    @include('content.blog')
 @endif
 {{-- <1st post> --}}
 @if($posts)
-    <div class="post">
-        <div class="post-header">
-            <img src="{{ asset('storage/'.$posts->user->image) }}" alt="User" class="user-avatar">
-            <div class="post-info">
-                <span><i class="fas fa-globe-americas"></i> {{ $posts->created_at->diffForHumans() }}</span>
-            </div>
-        </div>
-        <div class="post-content">
-            {{ $posts->content }}
-        </div>
-        @if($posts->image)
-            <img src="{{ asset('storage/'.$posts->image) }}" alt="Post Image" class="post-image">
-        @endif
-        @if($posts->video)
-            <video width="300" controls>
-            <source src="{{ asset('storage/'.$posts->video) }}" alt="Post Image" class="post-image">
-            </video>
-        @endif
-
-        <div class="post-stats">
-            <div class="post-stats-left">
-                <span>li</span>
-            </div>
-            <div class="post-stats-right">
-                <span>comm</span>
-            </div>
-        </div>
-        <div class="post-actions">
-            <div class="post-action-btn">
-                <i class="far fa-thumbs-up"></i><a href=""> Like </a> 
-            </div>
-            <div class="post-action-btn">
-                <i class="far fa-comment-alt"></i><a href="{{route('cmt.create',$posts->id)}}">
-                    Comment
-                </a>
-            </div>
-            <div class="post-action-btn">
-                <i class="fas fa-share"></i> <a href="#">Share </a>
-            </div>
-        </div>
-        @if($posts->comments)
-            @include('comment.comment', [
-                'comments' => $posts->comments->where('parent_id', null),
-                'level' => 0
-                ])
-        @endif
-    </div>
+    @include('content.post')
 @endif
 
     <!-- Facebook Feed Container -->

@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\API\BaseController as BaseController;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
         public function signup(Request $request)
         {
@@ -23,12 +24,7 @@ class AuthController extends Controller
 
                 if($validateUser->fails())
                     {
-                    return response()->json([
-                        'status'=>false,
-                        'message'=>'error',
-                        'errors'=>$validateUser->errors()->all()
-
-                    ],401);
+                    return $this->sendError('error',$validateUser->err0rs()->all());
                     }
 
             $user = User::create([
@@ -36,11 +32,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
             ]);
-            return response()->json([
-                'status'=>true,
-                'message'=>'Successful',
-                'user'=>$user,
-                ],200);
+            return $this->sendResponse($user,'User Created');
         }
         
 
@@ -55,10 +47,7 @@ class AuthController extends Controller
 
             if($validateUser->fails())
                 {
-                return response()->json([
-                    'status'=>false,
-                    'message'=>'error',
-                ],401);
+                return $this->sendError('login fail',$validateUser->errors()->all());
                 }
                 if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
                     $AuthUser=Auth::user();
@@ -70,10 +59,7 @@ class AuthController extends Controller
             ],200);
             }
             else{
-                return response()->json([
-                    'status'=>false,
-                    'message'=>'unsuccessful'
-                ],401);
+                return $this->sendError('Unauthorised');
             }
         }
 
@@ -83,11 +69,7 @@ class AuthController extends Controller
         $user=$request->user();
         $user->tokens()->delete();
 
-        return response()->json([
-            'status'=>true,
-            $user=>$user,
-            'message'=>'logout succesful'
-        ],200);
+        return $this->sendResponse($user,'logout successful');
         }
 }
         

@@ -9,6 +9,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use phpDocumentor\Reflection\Types\String_;
 
 class BlogController extends BaseController
 {
@@ -110,7 +111,8 @@ class BlogController extends BaseController
             }
             
             $this->authorize('update',Blog::find($id));
-            $blog=Blog::where('id', $id)->update([
+            // $blog=Blog::where('id', $id)->update([
+            $blog=Blog::ById($id)->update([
             'content'=>$request->content,
             'image'=>$imagePath,
             'video'=>$videoPath
@@ -122,14 +124,17 @@ class BlogController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $blog)
+    public function destroy(string $id)
     {   
-        $this->authorize('delete',$blog);
-        $blog=Blog::where('id',$blog->id)->firstOrFail();
+        $this->authorize('delete',$id);
+        // $blog=Blog::where('id',$id)->firstOrFail();
+        $blog=Blog::ById($id)->firstOrFail();
         $imagePath=$blog->image;
-        $videoPath=Blog::select('video')->where('id',$blog->id);
+        $videoPath=$blog->video;
         $filePath=public_path('storage/'.$imagePath);
         unlink($filePath);
+        $videoFilePath=public_path('storage/'.$videoPath);
+        unlink($videoFilePath);
         $blog->delete();
         return $this->sendResponse($blog,'Successful');
     }

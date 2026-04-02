@@ -97,7 +97,8 @@ class PostController extends BaseController
             }
 
             $this->authorize('update',Post::class);
-            $post=Post::where('id', $id)->update([
+            // $post=Post::where('id', $id)->update([
+            $post=Post::ById($id)->update([
             'content'=>$request->content,
             'image'=>$imagePath,
             'video'=>$videoPath
@@ -111,11 +112,14 @@ class PostController extends BaseController
     public function destroy(string $id)
     {   
         $this->authorize('delete',Post::class);
-        $post=Post::where('id',$id)->firstOrFail();
+        // $post=Post::where('id',$id)->firstOrFail();
+        $post=Post::ById($id)->firstOrFail();
         $imagePath=$post->image;
-        $videoPath=Post::select('video')->where('id',$id);
+        $videoPath=$post->video;
         $filePath=public_path('storage/'.$imagePath);
         unlink($filePath);
+        $videoFilePath=public_path('storage/'.$videoPath);
+        unlink($videoFilePath);
         $post->delete();
         return $this->sendResponse($post,'Successful');
  

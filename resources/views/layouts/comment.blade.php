@@ -1,7 +1,9 @@
 @section('main-content')
     @php
-        $blog= auth()->user()->blogs()->latest()->first();
-        $posts=auth()->user()->posts()->latest()->first();
+    use App\Models\Blog;
+    use App\Models\Post;
+        $blog= Blog::with('user')->latest()->first();
+        $posts=Post::with('user')->latest()->first();
     @endphp
     <div class="feed-container">
         <!-- Facebook Feed Container -->
@@ -27,7 +29,7 @@
                 @if($blog)
                     <div class="post">
                         <div class="post-header">
-                        <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
+                        <img src="{{ asset('storage/'.$blog->user->image) }}" alt="User" class="user-avatar">
                             <div class="post-info">
                                 <span><i class="fas fa-globe-americas"></i> {{ $blog->created_at->diffForHumans() }}</span>
                             </div>
@@ -67,7 +69,7 @@
                             </div>
                                 @foreach($blog->comments as $comm)
                                 <div class="create-post-top">
-                                    <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
+                                    <img src={{ asset('storage/'.$comm->user->image) }} alt="User" class="user-avatar">
                                     <div class="post-content" style="text-align: left">
                                         {{ $comm->content }}
                                     </div>
@@ -91,7 +93,7 @@
                 @if($posts)
                     <div class="post">
                         <div class="post-header">
-                        <img src="{{ asset('storage/'.auth()->user()->image) }}" alt="User" class="user-avatar">
+                        <img src="{{ asset('storage/'.$posts->user->image) }}" alt="User" class="user-avatar">
                             <div class="post-info">
                                 <span><i class="fas fa-globe-americas"></i> {{ $posts->created_at->diffForHumans() }}</span>
                             </div>
@@ -131,7 +133,7 @@
                             </div>
                                 @foreach($posts->comments as $comm)
                                 <div class="create-post-top">
-                                    <img src={{ asset('storage/'.auth()->user()->image) }} alt="User" class="user-avatar">
+                                    <img src={{ asset('storage/'.$comm->user->image) }} alt="User" class="user-avatar">
                                     <div class="post-content" style="text-align: left">
                                         {{ $comm->content }}
                                     </div>
